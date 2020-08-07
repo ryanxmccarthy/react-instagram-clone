@@ -2,7 +2,7 @@ import React from "react";
 import "./Posts.css";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import Post from "./Post";
+import Post from "../Post";
 
 const Posts = () => {
   return (
@@ -43,3 +43,5 @@ const Posts = () => {
     </Query>
   );
 };
+
+export default Posts;
