@@ -12,6 +12,8 @@ class Posts extends Component {
   }
 
   componentDidMount() {
+    Notification.requestPermission();
+
     this.props.apollo_client
       .query({
         query: gql`
@@ -38,6 +40,23 @@ class Posts extends Component {
       "new-post",
       (data) => {
         this.setState({ posts: this.state.posts.concat(data.post) });
+
+        if (Notification.permission === "granted") {
+          try {
+            // notify user of new post
+            let notification = new Notification("Pusher Instagram Clone", {
+              body: `New post from ${data.post.user.nickname}`,
+              icon: "https://img.stackshare.io/service/115/Pusher_logo.png",
+              image: `${data.post.image}`,
+            });
+            // open the website when the notification is clicked
+            notification.onclick = function (event) {
+              window.open("http://localhost:3000", "_blank");
+            };
+          } catch (e) {
+            console.log("Error displaying notification");
+          }
+        }
       },
       this
     );
