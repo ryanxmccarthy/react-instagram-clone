@@ -1,10 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 import "./Posts.css";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import Post from "../Post";
 
-const Posts = () => {
+class Posts extends Component {
+  constructor() {
+    super();
+    this.state = {
+      posts: []
+    }
+  }
+
   return (
     <Query
       query={gql`
