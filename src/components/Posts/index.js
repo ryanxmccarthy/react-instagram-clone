@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Posts.css";
 import gql from "graphql-tag";
 import Post from "../Post";
+import Notifier from "../Notifier";
 
 class Posts extends Component {
   constructor() {
@@ -9,6 +10,7 @@ class Posts extends Component {
     this.state = {
       posts: [],
     };
+    this.offline = !navigator.onLine;
   }
 
   componentDidMount() {
@@ -67,17 +69,15 @@ class Posts extends Component {
   }
 
   render() {
+    const notify = this.offline ? (
+      <Notifier data="Instagram Clone: Offline Mode" />
+    ) : (
+      <span />
+    );
     return (
-      <div className="Posts">
-        {this.state.posts.map((post) => (
-          <Post
-            nickname={post.user.nickname}
-            avatar={post.user.avatar}
-            image={post.image}
-            caption={post.caption}
-            key={post.id}
-          />
-        ))}
+      <div>
+        {notify}
+        // display posts [...]
       </div>
     );
   }
