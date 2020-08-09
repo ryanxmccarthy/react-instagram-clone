@@ -14,25 +14,29 @@ class Posts extends Component {
   componentDidMount() {
     Notification.requestPermission();
 
-    this.props.apollo_client
-      .query({
-        query: gql`
-          {
-            posts(user_id: "a") {
-              id
-              user {
-                nickname
-                avatar
+    if (!navigator.onLine) {
+      this.setState({ posts: JSON.parse(localStorage.getItem("posts")) });
+    } else {
+      this.props.apollo_client
+        .query({
+          query: gql`
+            {
+              posts(user_id: "a") {
+                id
+                user {
+                  nickname
+                  avatar
+                }
+                image
+                caption
               }
-              image
-              caption
             }
-          }
-        `,
-      })
-      .then((response) => {
-        this.setState({ posts: response.data.posts });
-      });
+          `,
+        })
+        .then((response) => {
+          this.setState({ posts: response.data.posts });
+        });
+    }
 
     this.posts_channel = this.props.pusher.subscribe("posts-channel");
 
